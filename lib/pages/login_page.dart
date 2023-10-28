@@ -1,15 +1,57 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_home_chef/components/my_button.dart';
 import 'package:ready_home_chef/components/my_textfield.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
-  final usernameController = TextEditingController();
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
-  void signUserIn() {
+  void signUserIn() async {
+    showDialog(
+      context: context,
+      builder:(context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+    
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text
+      );
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      if (e.code == 'invalid-email') {
+        errorMessage('Incorrect Email');
+      } else if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
+        errorMessage('Incorrect Password');
+      } else {
+        errorMessage('A problem has occurred');
+      }
+    }
+  }
 
+  void errorMessage(String e) {
+    showDialog(
+      context: context,
+      builder:(context) {
+        return AlertDialog(
+          title: Text('$e'),
+        );
+      },
+    );
   }
 
   @override
@@ -42,8 +84,8 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 25),
         
                 MyTextField(
-                  controller: usernameController,
-                  hintText: 'Username',
+                  controller: emailController,
+                  hintText: 'Email',
                   obscureText: false,
                 ),
         

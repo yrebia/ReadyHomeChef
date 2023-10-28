@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "145936397421",
+    "project_id": "ready-home-chef-64da3",
+    "storage_bucket": "ready-home-chef-64da3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145936397421:android:40cb5a94bb5e922ea97b64",
+        "android_client_info": {
+          "package_name": "com.example.ready_home_chef"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUKHfAW7_NmK585EeB7UHmgA0SQT2M4m8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
