@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_home_chef/components/my_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -50,14 +51,57 @@ class MyTextField extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
-  LoginPage({Key? key});
+class LoginPage extends StatefulWidget {
+  final Function()? onTap;
 
-  final usernameController = TextEditingController();
+  const LoginPage({super.key, required this.onTap});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
-  void signUserIn() {
-    // Add your login logic here.
+  void signUserIn() async {
+    showDialog(
+      context: context,
+      builder:(context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+    
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text
+      );
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      if (e.code == 'invalid-email') {
+        errorMessage('Incorrect Email');
+      } else if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
+        errorMessage('Incorrect Password');
+      } else {
+        errorMessage('A problem has occurred');
+      }
+    }
+  }
+
+  void errorMessage(String e) {
+    showDialog(
+      context: context,
+      builder:(context) {
+        return AlertDialog(
+          title: Text('$e'),
+        );
+      },
+    );
   }
 
   @override
@@ -101,40 +145,40 @@ class LoginPage extends StatelessWidget {
                       width: 350,
                       height: 350,
                     ),
-Align(
-  alignment: Alignment.center,
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Icon(
-        FontAwesomeIcons.utensils, // Utilisez une icône d'ustensile de cuisine
-        color: Colors.orange,
-        size: 30,
-      ),
-      Text(
-        ' Discover Home Recipes',
-        style: TextStyle(
-          fontFamily: 'verdana', // Remplacez par le nom de votre police
-          color: Colors.orange,
-          fontSize: 25,
-          fontWeight: FontWeight.w200,
-        ),
-      ),
-    ],
-  ),
-),
-Text(
-  'to Minimize Food Waste',
-  style: TextStyle(
-    color: Color.fromARGB(255, 255, 231, 208),
-    fontSize: 16,
-    fontWeight: FontWeight.w300
-  ),
-),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.utensils, // Utilisez une icône d'ustensile de cuisine
+                            color: Colors.orange,
+                            size: 30,
+                          ),
+                          Text(
+                            ' Discover Home Recipes',
+                            style: TextStyle(
+                              fontFamily: 'verdana', // Remplacez par le nom de votre police
+                              color: Colors.orange,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w200,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      'to Minimize Food Waste',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 255, 231, 208),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w300
+                      ),
+                    ),
                     SizedBox(height: 25),
                     MyTextField(
-                      controller: usernameController,
-                      hintText: 'Username',
+                      controller: emailController,
+                      hintText: 'Email',
                       obscureText: false,
                       prefixIcon: FontAwesomeIcons.user, // Icon for Username
                     ),
@@ -163,27 +207,27 @@ Text(
                       onTap: signUserIn,
                     ),
                     SizedBox(height: 50),
-Row(
-  mainAxisAlignment: MainAxisAlignment.center,
-  children: [
-    Text(
-      'Not a member?',
-      style: TextStyle(
-        color: Color.fromARGB(255, 255, 231, 208),
-        fontSize: 16, // Ajustez la taille de la police
-      ),
-    ),
-    SizedBox(width: 8), // Augmentez l'espacement horizontal
-    Text(
-      'Register now',
-      style: TextStyle(
-        color: Color.fromARGB(255, 186, 120, 43),
-        fontWeight: FontWeight.bold,
-        fontSize: 16, // Ajustez la taille de la police
-      ),
-    ),
-  ],
-)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Not a member?',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 255, 231, 208),
+                          fontSize: 16, // Ajustez la taille de la police
+                        ),
+                      ),
+                      SizedBox(width: 8), // Augmentez l'espacement horizontal
+                      Text(
+                        'Register now',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 186, 120, 43),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16, // Ajustez la taille de la police
+                        ),
+                      ),
+                    ],
+                  )
 
                   ],
                 ),
