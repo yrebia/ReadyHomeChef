@@ -205,6 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: 25),
                     MyButton(
                       onTap: signUserIn,
+                      text: 'Sign In',
                     ),
                     SizedBox(height: 50),
                   Row(
@@ -218,12 +219,15 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(width: 8), // Augmentez l'espacement horizontal
-                      Text(
-                        'Register now',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 186, 120, 43),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16, // Ajustez la taille de la police
+                      GestureDetector(
+                        onTap: widget.onTap,
+                        child: Text(
+                          'Register now',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 186, 120, 43),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16, // Ajustez la taille de la police
+                          ),
                         ),
                       ),
                     ],
