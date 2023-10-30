@@ -4,13 +4,15 @@ class MyTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final bool obscureText;
+  final IconData prefixIcon;
 
   const MyTextField({
     Key? key,
     required this.controller,
     required this.hintText,
     required this.obscureText,
-  });
+    required this.prefixIcon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +30,14 @@ class MyTextField extends StatelessWidget {
             borderSide: BorderSide(color: Color.fromARGB(255, 151, 0, 0)),
             borderRadius: BorderRadius.circular(10.0),
           ),
-          fillColor: Color.fromARGB(255, 255, 231, 208), 
+          fillColor: Color.fromARGB(255, 255, 231, 208),
           filled: true,
           hintText: hintText,
           hintStyle: TextStyle(
+            color: Colors.grey[500],
+          ),
+          prefixIcon: Icon(
+            prefixIcon,
             color: Colors.grey[500],
           ),
           contentPadding: EdgeInsets.symmetric(vertical: 15),

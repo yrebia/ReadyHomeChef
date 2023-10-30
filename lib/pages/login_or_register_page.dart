@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ready_home_chef/pages/login_page.dart';
-
 import 'register_page.dart';
 
 class LoginOrRegisterPage extends StatefulWidget {
