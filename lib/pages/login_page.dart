@@ -1,55 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ready_home_chef/components/my_button.dart';
+import 'package:ready_home_chef/components/my_textfield.dart'; // Importez MyTextField
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-
-class MyTextField extends StatelessWidget {
-  final TextEditingController controller;
-  final String hintText;
-  final bool obscureText;
-  final IconData prefixIcon; // New property for prefix icon
-
-  const MyTextField({
-    Key? key,
-    required this.controller,
-    required this.hintText,
-    required this.obscureText,
-    required this.prefixIcon, // Initialize prefixIcon
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: TextField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.orange),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.blue),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          fillColor: Colors.grey.shade200,
-          filled: true,
-          hintText: hintText,
-          hintStyle: TextStyle(
-            color: Colors.grey[500],
-          ),
-          prefixIcon: Icon(
-            prefixIcon, // Use the provided prefixIcon
-            color: Colors.grey[500], // Customize the color of the icon
-          ),
-          contentPadding: EdgeInsets.symmetric(vertical: 15),
-        ),
-      ),
-    );
-  }
-}
+import 'package:ready_home_chef/components/my_button.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -104,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  @override
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black.withOpacity(0.5),
@@ -158,10 +111,10 @@ class _LoginPageState extends State<LoginPage> {
                           Text(
                             ' Discover Home Recipes',
                             style: TextStyle(
-                              fontFamily: 'verdana', // Remplacez par le nom de votre police
+                              fontFamily: 'georgia', // Remplacez par le nom de votre police
                               color: Colors.orange,
                               fontSize: 25,
-                              fontWeight: FontWeight.w200,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -172,7 +125,8 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                         color: Color.fromARGB(255, 255, 231, 208),
                         fontSize: 16,
-                        fontWeight: FontWeight.w300
+                        fontFamily: 'Trebuchet MS',
+                        fontWeight: FontWeight.w400
                       ),
                     ),
                     SizedBox(height: 25),
@@ -197,7 +151,8 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           Text(
                             'Forgot Password ?',
-                            style: TextStyle(color: Color.fromARGB(255, 255, 231, 208)),
+                            style: TextStyle(color: Color.fromARGB(255, 255, 231, 208),
+                            fontFamily: 'georgia',),
                           ),
                         ],
                       ),
@@ -215,6 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                         'Not a member?',
                         style: TextStyle(
                           color: Color.fromARGB(255, 255, 231, 208),
+                          fontFamily: 'georgia',
                           fontSize: 16, // Ajustez la taille de la police
                         ),
                       ),
@@ -225,6 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                           'Register now',
                           style: TextStyle(
                             color: Color.fromARGB(255, 186, 120, 43),
+                            fontFamily: 'georgia',
                             fontWeight: FontWeight.bold,
                             fontSize: 16, // Ajustez la taille de la police
                           ),
