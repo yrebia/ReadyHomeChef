@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_home_chef/components/SidebarDrawer.dart';
+import 'package:ready_home_chef/components/landing_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
