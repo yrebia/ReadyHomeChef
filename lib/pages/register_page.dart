@@ -34,6 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
           email: emailController.text,
           password: passwordController.text
         );
+        // creer une entrée dans la DB
         Navigator.pop(context);
       } else {
         Navigator.pop(context);

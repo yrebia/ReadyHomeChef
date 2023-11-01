@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_home_chef/components/SidebarDrawer.dart';
-import 'package:ready_home_chef/components/landing_page.dart';
+import 'package:ready_home_chef/pages/landing_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -76,12 +76,12 @@ class HomePage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Image.asset(
-                                'assets/recipe_of_the_day.jpg',
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: 200,
-                              ),
+                              // Image.asset(
+                              //   'assets/recipe_of_the_day.jpg',
+                              //   fit: BoxFit.cover,
+                              //   width: double.infinity,
+                              //   height: 200,
+                              // ),
                               Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Column(
