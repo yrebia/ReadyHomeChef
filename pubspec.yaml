@@ -68,6 +68,7 @@ flutter:
   assets:
   - lib/img/sel.jpg
   - lib/img/logo.png
+  - lib/img/cat.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
