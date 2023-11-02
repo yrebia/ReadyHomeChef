@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ready_home_chef/components/my_button.dart';
 
 class IntroPage1 extends StatefulWidget {
-  List<bool> list;
+  Map<String, bool> list;
   final Function() nextPage;
 
   IntroPage1({
@@ -58,38 +58,38 @@ class _IntroPage1State extends State<IntroPage1> {
                 buildDietOption(
                   FontAwesomeIcons.apple,
                   'Vegetarian',
-                  widget.list[0],
-                  0,
+                  widget.list["vegetarian"]!,
+                  "vegetarian",
                 ),
                 buildDietOption(
                   FontAwesomeIcons.fish,
                   'Pescatarian',
-                  widget.list[1],
-                  1,
+                  widget.list["pescatarian"]!,
+                  "pescatarian",
                 ),
                 buildDietOption(
                   FontAwesomeIcons.cheese,
                   'No Dairy',
-                  widget.list[2],
-                  2,
+                  widget.list["noDairy"]!,
+                  "noDairy",
                 ),
                 buildDietOption(
                   FontAwesomeIcons.bacon,
                   'No Pork',
-                  widget.list[3],
-                  3,
+                  widget.list["noPork"]!,
+                  "noPork",
                 ),
                 buildDietOption(
                   FontAwesomeIcons.seedling,
                   'Vegan',
-                  widget.list[4],
-                  4,
+                  widget.list["vegan"]!,
+                  "vegan",
                 ),
                 buildDietOption(
                   FontAwesomeIcons.breadSlice,
                   'No Gluten',
-                  widget.list[5],
-                  5,
+                  widget.list["noGluten"]!,
+                  "noGluten",
                 ),
               ],
             ),
@@ -108,7 +108,7 @@ class _IntroPage1State extends State<IntroPage1> {
     IconData icon,
     String label,
     bool value,
-    int index,
+    String index,
   ) {
     return Column(
       children: [
@@ -123,7 +123,7 @@ class _IntroPage1State extends State<IntroPage1> {
             ),
             onPressed: () {
               setState(() {
-                widget.list[index] = !widget.list[index];
+                widget.list[index] = !widget.list[index]!;
               });
             },
           ),

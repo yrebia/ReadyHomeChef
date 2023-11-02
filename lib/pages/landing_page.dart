@@ -1,12 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_home_chef/landing_screens/page1.dart';
-import 'package:ready_home_chef/landing_screens/page2.dart';
 import 'package:ready_home_chef/pages/home_page.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({Key? key}) : super(key: key);
+  LandingPage({Key? key}) : super(key: key);
 
 
   @override
@@ -14,96 +13,46 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  PageController _controller = PageController();
+  final user = FirebaseAuth.instance.currentUser;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  bool onLastPage = false;
+  Map<String, bool> restriction = {
+    'vegetarian': false,
+    'pescatarian': false,
+    'noDairy': false,
+    'noPork': false,
+    'vegan': false,
+    'noGluten': false,
+  };
 
-  // Page 1
   List<bool> list = [false, false, false, false, false, false];
 
-  // bool isVegetarian = false;
-  // bool isPescatarian = false;
-  // bool noDairy = false;
-  // bool noPork = false;
-  // bool isVegan = false;
-  // bool noGluten = false;
+  void savePreferences() async {
+    try {
+      await firestore.collection('user').doc(user?.uid).set(restriction);
+      print('Document ajouté avec succès à la collection "users".');
+    } catch (e) {
+      print('Erreur lors de l\'ajout du document : $e');
+    };
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+        return HomePage();
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          PageView(
-            controller: _controller,
-            onPageChanged: (index) {
-              setState(() {
-                onLastPage = (index == 1);
-              });
-            } ,
-            children: [
-              IntroPage1(
-                list: list,
-                nextPage:() {
-                  _controller.nextPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                    );
-                },
-              ),
-              IntroPage2(),
-            ],
-          ),
-
-          Container(
-            alignment: Alignment(0, 0.75),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  icon: FaIcon(FontAwesomeIcons.arrowLeft, size: 32),
-                  color: Colors.red,
-                  onPressed: () {
-                    _controller.previousPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                    );
-                  },
-                ),
-
-                SmoothPageIndicator(controller: _controller, count: 2),
-
-                onLastPage ? 
-                IconButton(
-                  icon: FaIcon(FontAwesomeIcons.check, size: 32),
-                  color: Colors.red,
-                  onPressed: () {
-                    // envoyer les données
-                    // Navigate to HomePage
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                        return HomePage();
-                        },
-                      ),
-                    );
-                  },
-                ) : 
-                IconButton(
-                  icon: FaIcon(FontAwesomeIcons.arrowRight, size: 32),
-                  color: Colors.red,
-                  onPressed: () {
-                    _controller.nextPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                    );
-                  },
-                ),
-              ],
+      body: IntroPage1(
+              list: restriction,
+              nextPage:() {
+                savePreferences();
+              },
             ),
-          )
-        ],
-      ),
     );
   }
 }
