@@ -43,6 +43,12 @@ class _LandingPageState extends State<LandingPage> {
             children: [
               IntroPage1(
                 list: list,
+                nextPage:() {
+                  _controller.nextPage(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                    );
+                },
               ),
               IntroPage2(),
             ],
@@ -55,7 +61,7 @@ class _LandingPageState extends State<LandingPage> {
               children: [
                 IconButton(
                   icon: FaIcon(FontAwesomeIcons.arrowLeft, size: 32),
-                  color: Colors.blue,
+                  color: Colors.red,
                   onPressed: () {
                     _controller.previousPage(
                       duration: Duration(milliseconds: 300),
@@ -69,7 +75,7 @@ class _LandingPageState extends State<LandingPage> {
                 onLastPage ? 
                 IconButton(
                   icon: FaIcon(FontAwesomeIcons.check, size: 32),
-                  color: Colors.blue,
+                  color: Colors.red,
                   onPressed: () {
                     // envoyer les données
                     // Navigate to HomePage
@@ -85,7 +91,7 @@ class _LandingPageState extends State<LandingPage> {
                 ) : 
                 IconButton(
                   icon: FaIcon(FontAwesomeIcons.arrowRight, size: 32),
-                  color: Colors.blue,
+                  color: Colors.red,
                   onPressed: () {
                     _controller.nextPage(
                       duration: Duration(milliseconds: 300),

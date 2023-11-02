@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ready_home_chef/components/my_button.dart';
 
 class IntroPage1 extends StatefulWidget {
-
   List<bool> list;
+  final Function() nextPage;
 
   IntroPage1({
     super.key,
     required this.list,
+    required this.nextPage,
   });
 
   @override
@@ -15,6 +17,10 @@ class IntroPage1 extends StatefulWidget {
 }
 
 class _IntroPage1State extends State<IntroPage1> {
+
+  void submit() {
+    widget.nextPage();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,105 +30,75 @@ class _IntroPage1State extends State<IntroPage1> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          // image: DecorationImage(
-          //   image: AssetImage('img/cat.jpg'), // Remplacez par le chemin de votre image de fond
-          //   fit: BoxFit.cover,
-          // ),
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color.fromARGB(255, 90, 51, 21).withOpacity(0.0),
-              Color.fromARGB(255, 78, 51, 36).withOpacity(0.8),
-              Color.fromARGB(255, 137, 48, 4).withOpacity(0.15),
-              Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
-            ],
+            colors: [Color.fromARGB(255, 255, 140, 0), Color.fromARGB(255, 246, 197, 137)],
           ),
         ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Do you have any dietary preferences?',
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'What are your dietary preferences?',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
-              Wrap(
-                alignment: WrapAlignment.spaceEvenly,
-                children: [
-                  buildDietOption(
-                    FontAwesomeIcons.apple,
-                    'Vegetarian',
-                    widget.list[0],
-                    0,
-                  ),
-                  buildDietOption(
-                    FontAwesomeIcons.fish,
-                    'Pescatarian',
-                    widget.list[1],
-                    1,
-                  ),
-                  buildDietOption(
-                    FontAwesomeIcons.cheese,
-                    'No Dairy',
-                    widget.list[2],
-                    2,
-                  ),
-                  buildDietOption(
-                    FontAwesomeIcons.bacon,
-                    'No Pork',
-                    widget.list[3],
-                    3,
-                  ),
-                  buildDietOption(
-                    FontAwesomeIcons.seedling,
-                    'Vegan',
-                    widget.list[4],
-                    4,
-                  ),
-                  buildDietOption(
-                    FontAwesomeIcons.breadSlice,
-                    'No Gluten',
-                    widget.list[5],
-                    5,
-                  ),
-                ],
-              ),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     String preferences = '';
-              //     if (widget.isVegetarian) {
-              //       preferences += 'Vegetarian ';
-              //     }
-              //     if (widget.isPescatarian) {
-              //       preferences += 'Pescatarian ';
-              //     }
-              //     if (noDairy) {
-              //       preferences += 'No Dairy ';
-              //     }
-              //     if (noPork) {
-              //       preferences += 'No Pork ';
-              //     }
-              //     if (isVegan) {
-              //       preferences += 'Vegan ';
-              //     }
-              //     if (noGluten) {
-              //       preferences += 'No Gluten ';
-              //     }
-              //     ScaffoldMessenger.of(context).showSnackBar(
-              //       SnackBar(
-              //         content: Text('Selected preferences: $preferences'),
-              //       ),
-              //     );
-              //   },
-              //   child: Text('Submit Preferences'),
-              // ),
-            ],
-          ),
+            ),
+            SizedBox(height: 60),
+            Wrap(
+              alignment: WrapAlignment.spaceEvenly,
+              children: [
+                buildDietOption(
+                  FontAwesomeIcons.apple,
+                  'Vegetarian',
+                  widget.list[0],
+                  0,
+                ),
+                buildDietOption(
+                  FontAwesomeIcons.fish,
+                  'Pescatarian',
+                  widget.list[1],
+                  1,
+                ),
+                buildDietOption(
+                  FontAwesomeIcons.cheese,
+                  'No Dairy',
+                  widget.list[2],
+                  2,
+                ),
+                buildDietOption(
+                  FontAwesomeIcons.bacon,
+                  'No Pork',
+                  widget.list[3],
+                  3,
+                ),
+                buildDietOption(
+                  FontAwesomeIcons.seedling,
+                  'Vegan',
+                  widget.list[4],
+                  4,
+                ),
+                buildDietOption(
+                  FontAwesomeIcons.breadSlice,
+                  'No Gluten',
+                  widget.list[5],
+                  5,
+                ),
+              ],
+            ),
+            SizedBox(height: 40),
+                                MyButton(
+                      onTap: submit,
+                      text: 'Next',
+                    ),
+          ],
         ),
       ),
     );
@@ -134,26 +110,34 @@ class _IntroPage1State extends State<IntroPage1> {
     bool value,
     int index,
   ) {
-    return Container(
-      width: 100,
-      child: Column(
-        children: [
-          IconButton(
-            icon: FaIcon(icon, size: 32),
-            color: value ? Colors.green : Colors.grey,
+    return Column(
+      children: [
+        Container(
+          width: 140,
+          padding: const EdgeInsets.all(10),
+          child: IconButton(
+            icon: FaIcon(
+              icon,
+              size: 48,
+              color: value ? Colors.red : Colors.grey,
+            ),
             onPressed: () {
               setState(() {
                 widget.list[index] = !widget.list[index];
               });
             },
           ),
-          Text(
-            label,
-            style: TextStyle(fontSize: 16, color: Colors.white),
-            textAlign: TextAlign.center,
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
-        ],
-      ),
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 }
