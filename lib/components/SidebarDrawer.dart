@@ -1,50 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ready_home_chef/pages/grocerylist_page.dart';
+import 'package:ready_home_chef/pages/search_page.dart';
+import 'package:ready_home_chef/pages/fridge_page.dart';
+
+
 
 class SidebarDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Color textColor = Color(0xFF646464); // Couleur de la police plus douce
+
     return Drawer(
       child: Container(
-        color: Color.fromARGB(255, 243, 149, 33), // Couleur d'arrière-plan de la sidebar
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(255, 255, 211, 164),
+              Color.fromARGB(255, 226, 189, 149),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         child: ListView(
           children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text(
-                "User Name",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white, // Couleur du texte
-                ),
-              ),
-              accountEmail: Text(
-                "user@example.com",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white, // Couleur du texte
-                ),
-              ),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.white,
+            ListTile(
+              title: Align(
+                alignment: Alignment.centerRight,
                 child: Icon(
-                  FontAwesomeIcons.user,
-                  size: 64,
-                  color: Colors.orange,
+                  Icons.arrow_back_ios_new_sharp,
+                  color: textColor, // Utilisation de la couleur de la police
                 ),
               ),
-              decoration: BoxDecoration(
-                color: Colors.blue, // Couleur d'arrière-plan de l'en-tête
-              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
             ListTile(
-              leading: Icon(FontAwesomeIcons.chartBar),
+              leading: Icon(FontAwesomeIcons.chartBar, color: textColor),
               title: Text(
-                'Dashboard',
+                'Homepage',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white, // Couleur du texte
+                  color: textColor,
+                  fontFamily: 'Verdana', // Changer la police ici
                 ),
               ),
               onTap: () {
@@ -52,27 +53,31 @@ class SidebarDrawer extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(FontAwesomeIcons.search),
+              leading: Icon(FontAwesomeIcons.search, color: textColor),
               title: Text(
                 'Search Recipes',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white, // Couleur du texte
+                  color: textColor,
+                  fontFamily: 'Verdana',
                 ),
               ),
-              onTap: () {
-                // Naviguez vers la page de recherche de recettes
-              },
+onTap: () {
+                       Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SearchRecipePage()),
+    );}
             ),
             ListTile(
-              leading: Icon(FontAwesomeIcons.heart),
+              leading: Icon(FontAwesomeIcons.heart, color: textColor),
               title: Text(
                 'Favorite Recipes',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white, // Couleur du texte
+                  color: textColor,
+                  fontFamily: 'Verdana',
                 ),
               ),
               onTap: () {
@@ -80,35 +85,101 @@ class SidebarDrawer extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(FontAwesomeIcons.userCircle),
+              leading: Icon(FontAwesomeIcons.userCircle, color: textColor),
               title: Text(
                 'Profile',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white, // Couleur du texte
+                  color: textColor,
+                  fontFamily: 'Verdana',
                 ),
               ),
               onTap: () {
                 // Naviguez vers la page de profil de l'utilisateur
               },
             ),
-            // Bouton "Go Back" personnalisé
-            ListTile(
-              leading: Icon(
-                Icons.arrow_back,
-                color: Colors.white, // Couleur de l'icône
+            Divider(
+              color: textColor,
+              height: 1,
+              thickness: 1,
+            ),
+            Card(
+              elevation: 4,
+              margin: EdgeInsets.symmetric(vertical: 8.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
               ),
+              color: Colors.orange,
+              child: Container(
+                width: 100,
+                child: ListTile(
+                  leading: Icon(FontAwesomeIcons.snowflake),
+                  title: Text(
+                    'Your Fridge',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                      fontFamily: 'Verdana',
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => FridgePage()),
+    );
+                  },
+                ),
+              ),
+            ),
+            Card(
+              elevation: 4,
+              margin: EdgeInsets.symmetric(vertical: 8.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              color: Colors.orange,
+              child: Container(
+                width: 150,
+                child: ListTile(
+                  leading: Icon(FontAwesomeIcons.shoppingBasket),
+                  title: Text(
+                    'Your Grocery List',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                      fontFamily: 'Verdana',
+                    ),
+                  ),
+                  onTap: () {
+                       Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => GroceryListPage()),
+    );
+                  },
+                ),
+              ),
+            ),
+            Divider(
+              color: textColor,
+              height: 1,
+              thickness: 1,
+            ),
+            ListTile(
+              leading: Icon(FontAwesomeIcons.signOutAlt, color: textColor),
               title: Text(
-                'Retour à la page précédente',
+                'Logout',
                 style: TextStyle(
-                  color: Colors.white, // Couleur du texte
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  color: textColor,
+                  fontFamily: 'Verdana',
                 ),
               ),
               onTap: () {
-                Navigator.pop(context); // Revenir à la page précédente
+                // Gérez la déconnexion ici
               },
             ),
           ],

@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_home_chef/components/SidebarDrawer.dart';
-import 'package:ready_home_chef/pages/landing_page.dart';
+import 'package:ready_home_chef/components/search_bar.dart' as mySearchBar;
+import 'package:ready_home_chef/components/popular_recipes_carrousel.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
+  HomePage({Key? key});
 
   final user = FirebaseAuth.instance.currentUser!;
 
@@ -15,107 +16,92 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('My Recipes App'),
-        actions: [
-          IconButton(
-            onPressed: signUserOut,
-            icon: Icon(Icons.logout),
-          )
-        ],
-      ),
+appBar: AppBar(
+  backgroundColor: Colors.transparent, // Définit l'arrière-plan comme transparent
+  elevation: 0, // Supprime l'ombre sous la barre d'applications
+  title: Text(''), // Utilisez une chaîne vide pour supprimer le titre
+  actions: [
+    IconButton(
+      onPressed: signUserOut,
+      icon: Icon(Icons.logout),
+    )
+  ],
+  iconTheme: IconThemeData(color: Color(0xFF2E2E2E)), // Définit la couleur des icônes
+),
+
       drawer: SidebarDrawer(),
-      body: Row(
-        children: [
-          // Contenu principal
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Bannière d'utilisateur
-                    Container(
-                      padding: EdgeInsets.all(16),
-                      color: Colors.orange,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Welcome, ${user.displayName ?? 'User'}!',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            'Explore personalized recipes just for you.',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Bannière d'utilisateur
+            Container(
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.orange,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Welcome, ${user.displayName ?? 'User'}!',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                    // Exemple de recette
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Recipe of the Day',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Card(
-                          elevation: 4,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Image.asset(
-                              //   'assets/recipe_of_the_day.jpg',
-                              //   fit: BoxFit.cover,
-                              //   width: double.infinity,
-                              //   height: 200,
-                              // ),
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Spaghetti Carbonara',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      'A classic Italian pasta dish.',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Explore personalized recipes just for you.',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
                     ),
-                    // Autres sections de recettes personnalisées ici...
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+            SizedBox(height: 24),
+
+            // Utilisation de l'alias pour le composant SearchBar
+            mySearchBar.SearchBar(controller: TextEditingController()),
+
+            SizedBox(height: 24),
+
+            // Recette du jour
+            Text(
+              'Recette du Jour',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 16),
+            // Carrousel de recettes populaires
+            PopularRecipesCarousel(),
+            SizedBox(height: 32),
+
+            // My Favorites
+            Text(
+              'My Favorites',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'You don\'t have any recipes in favorites yet',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
