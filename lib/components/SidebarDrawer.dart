@@ -127,7 +127,7 @@ onTap: () {
                   onTap: () {
                     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => FridgePage()),
+      MaterialPageRoute(builder: (context) => const FridgePage()),
     );
                   },
                 ),

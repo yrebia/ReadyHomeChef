@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:ready_home_chef/pages/auth_page.dart';
 import 'firebase_options.dart';
 
@@ -7,6 +8,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  OpenFoodAPIConfiguration.userAgent = UserAgent(
+    name: 'ReadyHomeChef',
   );
   runApp(const MyApp());
 }

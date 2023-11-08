@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_home_chef/components/recipe.dart';
 import 'package:ready_home_chef/components/search_bar.dart' as mySearchBar;
+import 'package:ready_home_chef/pages/recipes_page.dart';
 
 class SearchRecipePage extends StatelessWidget {
   @override
@@ -42,44 +44,47 @@ class SearchRecipePage extends StatelessWidget {
             ),
           ),
 
-          Expanded(
-            child: ListView.builder(
-              itemCount: searchResults.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  elevation: 2,
-                  margin: EdgeInsets.all(16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: ListTile(
-                    title: Text(
-                      searchResults[index].recipeName,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+          StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('recipes').snapshots(),
+            builder: (context, snapshot) {
+              if(snapshot.hasError) {
+                return Center(child: Text(snapshot.error.toString()));
+              }
+
+              if(!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: snapshot.requireData.size,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot document = snapshot.requireData.docs[index];
+                    Map item = document.data() as Map;
+                    
+                    return Card(
+                      child: ListTile(
+                        title: Text(item['title']),
+                        subtitle: Image.network(item['imgUrl']),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RecipePage(
+                                recipeId: document.id,
+                                recipeTitle: item['title']
+                              )
+                            ),
+                          );
+                          print(document.id);
+                        },
                       ),
-                    ),
-                    subtitle: Text(searchResults[index].description),
-                    leading: Container(
-                      width: 100,
-                      height: 100,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          searchResults[index].imageUrl,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    onTap: () {
-                      // Gérez ce qui se passe lorsque l'utilisateur clique sur une recette
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
+                    );
+                  }
+                )
+              );
+            }
+          )
         ],
       ),
     );
