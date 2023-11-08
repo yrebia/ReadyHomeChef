@@ -20,6 +20,7 @@ class StartPage extends StatelessWidget {
             print('Has Data: ${snapshot.hasData} uid: ${user?.uid}');
             if (snapshot.hasData) {
               // L'utilisateur existe dans la base de données, vous pouvez continuer vers la page principale.
+              // return FoodSearchPage();
               return HomePage();
             } else {
               // L'utilisateur n'existe pas dans la base de données, affichez la landing page.
@@ -27,7 +28,7 @@ class StartPage extends StatelessWidget {
             }
           } else {
             // Affichez une indication de chargement si nécessaire.
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
         },
       ),

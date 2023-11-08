@@ -30,77 +30,79 @@ appBar: AppBar(
 ),
 
       drawer: SidebarDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Bannière d'utilisateur
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.orange,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Welcome, ${user.displayName ?? 'User'}!',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Bannière d'utilisateur
+              Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.orange,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Welcome, ${user.displayName ?? 'User'}!',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Explore personalized recipes just for you.',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
+                    SizedBox(height: 8),
+                    Text(
+                      'Explore personalized recipes just for you.',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 24),
-
-            // Utilisation de l'alias pour le composant SearchBar
-            mySearchBar.SearchBar(controller: TextEditingController()),
-
-            SizedBox(height: 24),
-
-            // Recette du jour
-            Text(
-              'Recette du Jour',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+              SizedBox(height: 24),
+      
+              // Utilisation de l'alias pour le composant SearchBar
+              mySearchBar.SearchBar(controller: TextEditingController()),
+      
+              SizedBox(height: 24),
+      
+              // Recette du jour
+              Text(
+                'Recette du Jour',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            SizedBox(height: 16),
-            // Carrousel de recettes populaires
-            PopularRecipesCarousel(),
-            SizedBox(height: 32),
-
-            // My Favorites
-            Text(
-              'My Favorites',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+              SizedBox(height: 16),
+              // Carrousel de recettes populaires
+              PopularRecipesCarousel(),
+              SizedBox(height: 32),
+      
+              // My Favorites
+              Text(
+                'My Favorites',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Text(
-              'You don\'t have any recipes in favorites yet',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
+              Text(
+                'You don\'t have any recipes in favorites yet',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
