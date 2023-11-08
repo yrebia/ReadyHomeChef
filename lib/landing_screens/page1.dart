@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ready_home_chef/components/my_button.dart';
 
 class IntroPage1 extends StatefulWidget {
-  Map<String, bool> list;
+  final Map<String, bool> list;
   final Function() nextPage;
 
   IntroPage1({

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:ready_home_chef/components/recipe.dart';
 import 'package:ready_home_chef/components/search_bar.dart' as mySearchBar;
 import 'package:ready_home_chef/pages/recipes_page.dart';
 

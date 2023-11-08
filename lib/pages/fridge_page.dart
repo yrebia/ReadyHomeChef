@@ -88,7 +88,7 @@ class _FridgePageState extends State<FridgePage> {
           // Récupérez les éléments du réfrigérateur.
           List<dynamic> fridgeItems = fridgeData['items'];
 
-          if (fridgeItems == null || fridgeItems.isEmpty) {
+          if (fridgeItems.isEmpty) {
             return Center(child: Text('Aucun élément dans le réfrigérateur.'));
           }
 
