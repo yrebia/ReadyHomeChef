@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ready_home_chef/pages/grocerylist_page.dart';
 import 'package:ready_home_chef/pages/search_page.dart';
 import 'package:ready_home_chef/pages/fridge_page.dart';
+import 'package:ready_home_chef/pages/user_page.dart';
 
 
 
@@ -95,9 +96,12 @@ onTap: () {
                   fontFamily: 'Verdana',
                 ),
               ),
-              onTap: () {
-                // Naviguez vers la page de profil de l'utilisateur
-              },
+                  onTap: () {
+                    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => UserPage()),
+    );
+                  },
             ),
             Divider(
               color: textColor,
