@@ -1,68 +1,113 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class GroceryListPage extends StatefulWidget {
-  final List<String> groceryItems = [
-    'Apples',
-    'Bananas',
-    'Milk',
-    'Bread',
-    'Eggs',
-  ];
-
   @override
   _GroceryListPageState createState() => _GroceryListPageState();
 }
 
 class _GroceryListPageState extends State<GroceryListPage> {
-  String searchText = '';
-  List<String> filteredGroceryItems = [];
+  final user = FirebaseAuth.instance.currentUser;
+  final TextEditingController itemController = TextEditingController();
+
+  void addItemOnGroceryList() {
+    if (itemController.text.isNotEmpty) {
+      FirebaseFirestore.instance.collection('grocery').doc(user?.uid).get().then((snapshot) {
+        Map<String, dynamic>? groceryList = snapshot.data();
+        groceryList?['item'].add(itemController.text);
+        groceryList?['check'].add(false);
+
+        if (groceryList != null) {
+          FirebaseFirestore.instance.collection('grocery').doc(user?.uid).set(groceryList);
+        }
+        itemController.text = '';
+      });
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Filter the grocery items based on the search text
-    filteredGroceryItems = widget.groceryItems
-        .where((item) => item.toLowerCase().contains(searchText.toLowerCase()))
-        .toList();
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Grocery List'),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              onChanged: (value) {
-                setState(() {
-                  searchText = value;
-                });
-              },
-              decoration: InputDecoration(
-                hintText: 'Search for items...',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () {
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance.collection('grocery').doc(user?.uid).snapshots(),
+        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+          Map<String, dynamic> groceryList = snapshot.data?.data() as Map<String, dynamic>;
+          List<String> item = List<String>.from(groceryList['item'] ?? []);
+          List<bool> check = List<bool>.from(groceryList['check'] ?? []);
+
+          return ListView.builder(
+            itemCount: item.length,
+            itemBuilder: (context, index) {
+              String i = item[index];
+              bool isChecked = check[index];
+
+              return ListTile(
+                title: Text(i),
+                leading: Checkbox(
+                  value: isChecked,
+                  onChanged: (value) {
                     setState(() {
-                      searchText = '';
+                      groceryList['check'][index] = !isChecked;
+                      FirebaseFirestore.instance.collection('grocery').doc(user?.uid).set(groceryList);
                     });
                   },
                 ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: filteredGroceryItems.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(filteredGroceryItems[index]),
-                  // You can add more widgets or actions here for each item
-                );
-              },
-            ),
-          ),
-        ],
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    setState(() {
+                      item.removeAt(index);
+                      check.removeAt(index);
+                      groceryList['item'] = item;
+                      groceryList['check'] = check;
+                      FirebaseFirestore.instance.collection('grocery').doc(user?.uid).set(groceryList);
+                    });
+                  },
+                ),
+              );
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Add Item'),
+                content: TextField(
+                  controller: itemController,
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text('Cancel'),
+                    onPressed: () {
+                      itemController.text = '';
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: Text('Add'),
+                    onPressed: () {
+                      addItemOnGroceryList();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
