@@ -49,6 +49,7 @@ class SidebarDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
+                Navigator.pop(context);
                 // Naviguez vers la page du tableau de bord
               },
             ),
@@ -64,41 +65,42 @@ class SidebarDrawer extends StatelessWidget {
                 ),
               ),
 onTap: () {
+  Navigator.pop(context);
                        Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SearchRecipePage()),
     );}
             ),
-            ListTile(
-              leading: Icon(FontAwesomeIcons.heart, color: textColor),
-              title: Text(
-                'Favorite Recipes',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                  fontFamily: 'Verdana',
-                ),
-              ),
-              onTap: () {
-                // Naviguez vers la page des recettes favorites
-              },
-            ),
-            ListTile(
-              leading: Icon(FontAwesomeIcons.userCircle, color: textColor),
-              title: Text(
-                'Profile',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                  fontFamily: 'Verdana',
-                ),
-              ),
-              onTap: () {
-                // Naviguez vers la page de profil de l'utilisateur
-              },
-            ),
+            // ListTile(
+            //   leading: Icon(FontAwesomeIcons.heart, color: textColor),
+            //   title: Text(
+            //     'Favorite Recipes',
+            //     style: TextStyle(
+            //       fontSize: 18,
+            //       fontWeight: FontWeight.bold,
+            //       color: textColor,
+            //       fontFamily: 'Verdana',
+            //     ),
+            //   ),
+            //   onTap: () {
+            //     // Naviguez vers la page des recettes favorites
+            //   },
+            // ),
+            // ListTile(
+            //   leading: Icon(FontAwesomeIcons.userCircle, color: textColor),
+            //   title: Text(
+            //     'Profile',
+            //     style: TextStyle(
+            //       fontSize: 18,
+            //       fontWeight: FontWeight.bold,
+            //       color: textColor,
+            //       fontFamily: 'Verdana',
+            //     ),
+            //   ),
+            //   onTap: () {
+            //     // Naviguez vers la page de profil de l'utilisateur
+            //   },
+            // ),
             Divider(
               color: textColor,
               height: 1,
@@ -125,6 +127,7 @@ onTap: () {
                     ),
                   ),
                   onTap: () {
+                    Navigator.pop(context);
                     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const FridgePage()),
@@ -154,6 +157,7 @@ onTap: () {
                     ),
                   ),
                   onTap: () {
+                    Navigator.pop(context);
                        Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => GroceryListPage()),

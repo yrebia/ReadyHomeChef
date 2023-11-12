@@ -39,8 +39,7 @@ class _SearchRecipePageState extends State<SearchRecipePage> {
         title: Text('Search Recipes'),
         backgroundColor: Colors.orange,
       ),
-      body: SingleChildScrollView(
-        child: Column(
+      body: Column(
           children: [
             SizedBox(height: 10),
             Padding(
@@ -82,49 +81,49 @@ class _SearchRecipePageState extends State<SearchRecipePage> {
                 ],
               ),
             ),
-            StreamBuilder<QuerySnapshot>(
-              stream: searchResults,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error.toString()}'));
-                }
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: searchResults,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error.toString()}'));
+                  }
 
-                if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
-                }
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
 
-                if (snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('No recipes found.'));
-                }
+                  if (snapshot.data!.docs.isEmpty) {
+                    return Center(child: Text('No recipes found.'));
+                  }
+                  
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      QueryDocumentSnapshot recipe = snapshot.data!.docs[index];
+                      String recipeId = recipe.id;
 
-                // return Text('data');
-                return ListView.builder(
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (context, index) {
-                    QueryDocumentSnapshot recipe = snapshot.data!.docs[index];
-                    String recipeId = recipe.id;
-
-                    return ListTile(
-                      title: Text(recipe['title']),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RecipePage(
-                              recipeId: recipeId,
-                              recipeTitle: recipe['title'],
+                      return ListTile(
+                        title: Text(recipe['title']),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RecipePage(
+                                recipeId: recipeId,
+                                recipeTitle: recipe['title'],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                );
-              },
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
             )
           ],
         ),
-      ),
     );
   }
 }
