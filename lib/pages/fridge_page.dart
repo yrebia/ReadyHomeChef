@@ -29,6 +29,18 @@ class _FridgePageState extends State<FridgePage> {
     }
   }
 
+  void deleteItemToFirebase(String item) {
+    if (item.isNotEmpty) {
+      // Ajouter l'élément dans Firebase.
+      FirebaseFirestore.instance
+          .collection('fridge')
+          .doc(user?.uid)
+          .update({
+        'items': FieldValue.arrayRemove([item]),
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     
@@ -55,14 +67,7 @@ class _FridgePageState extends State<FridgePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('My Fridge'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () {
-              // Rafraîchir les données si nécessaire.
-            },
-          ),
-        ],
+        backgroundColor: Colors.orange,
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
@@ -95,8 +100,13 @@ class _FridgePageState extends State<FridgePage> {
           // Construisez la liste d'éléments à partir des données Firestore.
           List<Widget> elements = fridgeItems.map((item) {
             return ListTile(
-              title: Text(item.toString()),
-              // Personnalisez l'affichage des éléments selon vos besoins.
+            title: Text(item.toString()),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                deleteItemToFirebase(item.toString());
+              },
+              ),
             );
           }).toList();
 
@@ -105,7 +115,7 @@ class _FridgePageState extends State<FridgePage> {
           );
         },
       ),
-      floatingActionButton: Row(
+     floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
@@ -115,7 +125,7 @@ class _FridgePageState extends State<FridgePage> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Ajouter un élément'),
+                    title: Text('Add a New Aliment'),
                     content: TextField(
                       onChanged: (value) {
                         newItemName = value;
@@ -124,18 +134,16 @@ class _FridgePageState extends State<FridgePage> {
                     actions: [
                       TextButton(
                         onPressed: () {
-                          // Annuler l'ajout.
                           Navigator.of(context).pop();
                         },
-                        child: Text('Annuler'),
+                        child: Text('Cancel'),
                       ),
                       TextButton(
                         onPressed: () {
-                          // Ajouter l'élément à Firebase.
                           addItemToFirebase();
                           Navigator.of(context).pop();
                         },
-                        child: Text('Ajouter'),
+                        child: Text('Add'),
                       ),
                     ],
                   );
@@ -143,18 +151,21 @@ class _FridgePageState extends State<FridgePage> {
               );
             },
             child: Icon(Icons.add),
+            backgroundColor: Colors.orange,
           ),
           SizedBox(width: 16),
           FloatingActionButton(
             heroTag: "tag2",
             onPressed: () {
-               _qrBarCodeScannerDialogPlugin.getScannedQrBarCode(
-                        context: context,
-                        onCode: (code) {
-                          searchFood(code);
-                        });
+              _qrBarCodeScannerDialogPlugin.getScannedQrBarCode(
+                context: context,
+                onCode: (code) {
+                  searchFood(code);
+                },
+              );
             },
             child: Icon(Icons.qr_code),
+            backgroundColor: Colors.orange,
           )
         ],
       ),

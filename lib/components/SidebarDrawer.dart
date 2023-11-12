@@ -7,13 +7,15 @@ import 'package:ready_home_chef/pages/fridge_page.dart';
 
 
 class SidebarDrawer extends StatelessWidget {
+  const SidebarDrawer({super.key});
+
   @override
   Widget build(BuildContext context) {
-    Color textColor = Color(0xFF646464); // Couleur de la police plus douce
+    Color textColor = const Color(0xFF646464); // Couleur de la police plus douce
 
     return Drawer(
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               Color.fromARGB(255, 255, 211, 164),
@@ -49,6 +51,7 @@ class SidebarDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
+                Navigator.pop(context);
                 // Naviguez vers la page du tableau de bord
               },
             ),
@@ -63,42 +66,43 @@ class SidebarDrawer extends StatelessWidget {
                   fontFamily: 'Verdana',
                 ),
               ),
-onTap: () {
-                       Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SearchRecipePage()),
-    );}
-            ),
-            ListTile(
-              leading: Icon(FontAwesomeIcons.heart, color: textColor),
-              title: Text(
-                'Favorite Recipes',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                  fontFamily: 'Verdana',
-                ),
-              ),
               onTap: () {
-                // Naviguez vers la page des recettes favorites
-              },
+                Navigator.pop(context);
+                                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SearchRecipePage()),
+                  );}
             ),
-            ListTile(
-              leading: Icon(FontAwesomeIcons.userCircle, color: textColor),
-              title: Text(
-                'Profile',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                  fontFamily: 'Verdana',
-                ),
-              ),
-              onTap: () {
-                // Naviguez vers la page de profil de l'utilisateur
-              },
-            ),
+            // ListTile(
+            //   leading: Icon(FontAwesomeIcons.heart, color: textColor),
+            //   title: Text(
+            //     'Favorite Recipes',
+            //     style: TextStyle(
+            //       fontSize: 18,
+            //       fontWeight: FontWeight.bold,
+            //       color: textColor,
+            //       fontFamily: 'Verdana',
+            //     ),
+            //   ),
+            //   onTap: () {
+            //     // Naviguez vers la page des recettes favorites
+            //   },
+            // ),
+            // ListTile(
+            //   leading: Icon(FontAwesomeIcons.userCircle, color: textColor),
+            //   title: Text(
+            //     'Profile',
+            //     style: TextStyle(
+            //       fontSize: 18,
+            //       fontWeight: FontWeight.bold,
+            //       color: textColor,
+            //       fontFamily: 'Verdana',
+            //     ),
+            //   ),
+            //   onTap: () {
+            //     // Naviguez vers la page de profil de l'utilisateur
+            //   },
+            // ),
             Divider(
               color: textColor,
               height: 1,
@@ -106,15 +110,15 @@ onTap: () {
             ),
             Card(
               elevation: 4,
-              margin: EdgeInsets.symmetric(vertical: 8.0),
+              margin: const EdgeInsets.symmetric(vertical: 8.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.0),
               ),
               color: Colors.orange,
-              child: Container(
+              child: SizedBox(
                 width: 100,
                 child: ListTile(
-                  leading: Icon(FontAwesomeIcons.snowflake),
+                  leading: const Icon(FontAwesomeIcons.snowflake),
                   title: Text(
                     'Your Fridge',
                     style: TextStyle(
@@ -125,25 +129,26 @@ onTap: () {
                     ),
                   ),
                   onTap: () {
+                    Navigator.pop(context);
                     Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const FridgePage()),
-    );
+                    context,
+                    MaterialPageRoute(builder: (context) => const FridgePage()),
+                  );
                   },
                 ),
               ),
             ),
             Card(
               elevation: 4,
-              margin: EdgeInsets.symmetric(vertical: 8.0),
+              margin: const EdgeInsets.symmetric(vertical: 8.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.0),
               ),
               color: Colors.orange,
-              child: Container(
+              child: SizedBox(
                 width: 150,
                 child: ListTile(
-                  leading: Icon(FontAwesomeIcons.shoppingBasket),
+                  leading: const Icon(FontAwesomeIcons.shoppingBasket),
                   title: Text(
                     'Your Grocery List',
                     style: TextStyle(
@@ -154,10 +159,11 @@ onTap: () {
                     ),
                   ),
                   onTap: () {
-                       Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => GroceryListPage()),
-    );
+                    Navigator.pop(context);
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => GroceryListPage()),
+                  );
                   },
                 ),
               ),
