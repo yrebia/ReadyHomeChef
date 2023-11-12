@@ -47,7 +47,7 @@ appBar: AppBar(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Welcome, ${user.displayName ?? 'User'}!',
+                      'Welcome,',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,

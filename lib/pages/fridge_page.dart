@@ -67,6 +67,7 @@ class _FridgePageState extends State<FridgePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('My Fridge'),
+        backgroundColor: Colors.orange,
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
@@ -114,7 +115,7 @@ class _FridgePageState extends State<FridgePage> {
           );
         },
       ),
-      floatingActionButton: Row(
+     floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
@@ -124,7 +125,7 @@ class _FridgePageState extends State<FridgePage> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Ajouter un élément'),
+                    title: Text('Add a New Aliment'),
                     content: TextField(
                       onChanged: (value) {
                         newItemName = value;
@@ -133,18 +134,16 @@ class _FridgePageState extends State<FridgePage> {
                     actions: [
                       TextButton(
                         onPressed: () {
-                          // Annuler l'ajout.
                           Navigator.of(context).pop();
                         },
-                        child: Text('Annuler'),
+                        child: Text('Cancel'),
                       ),
                       TextButton(
                         onPressed: () {
-                          // Ajouter l'élément à Firebase.
                           addItemToFirebase();
                           Navigator.of(context).pop();
                         },
-                        child: Text('Ajouter'),
+                        child: Text('Add'),
                       ),
                     ],
                   );
@@ -152,18 +151,21 @@ class _FridgePageState extends State<FridgePage> {
               );
             },
             child: Icon(Icons.add),
+            backgroundColor: Colors.orange,
           ),
           SizedBox(width: 16),
           FloatingActionButton(
             heroTag: "tag2",
             onPressed: () {
-               _qrBarCodeScannerDialogPlugin.getScannedQrBarCode(
-                        context: context,
-                        onCode: (code) {
-                          searchFood(code);
-                        });
+              _qrBarCodeScannerDialogPlugin.getScannedQrBarCode(
+                context: context,
+                onCode: (code) {
+                  searchFood(code);
+                },
+              );
             },
             child: Icon(Icons.qr_code),
+            backgroundColor: Colors.orange,
           )
         ],
       ),

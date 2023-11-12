@@ -31,32 +31,38 @@ class _RecipePageState extends State<RecipePage> {
           FirebaseFirestore.instance.collection('grocery').doc(user?.uid).set(groceryList);
         }
       });
-
     }
   }
 
   void addAllItemToShoppingList(items) {
     FirebaseFirestore.instance.collection('grocery').doc(user?.uid).get().then((snapshot) {
-        Map<String, dynamic>? groceryList = snapshot.data();
-        for (int index = 0; index < items.length; index++){
-          groceryList?['item'].add(items[index]);
-          groceryList?['check'].add(false);
-          setState(() {
-            addedToShoppingList[index] = true;
-          });
-        }
+      Map<String, dynamic>? groceryList = snapshot.data();
+      for (int index = 0; index < items.length; index++) {
+        groceryList?['item'].add(items[index]);
+        groceryList?['check'].add(false);
+        setState(() {
+          addedToShoppingList[index] = true;
+        });
+      }
 
-        if (groceryList != null) {
-          FirebaseFirestore.instance.collection('grocery').doc(user?.uid).set(groceryList);
-        }
-      });
+      if (groceryList != null) {
+        FirebaseFirestore.instance.collection('grocery').doc(user?.uid).set(groceryList);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.recipeTitle),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.orange),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance.collection('recipes').doc(widget.recipeId).snapshots(),
@@ -75,8 +81,9 @@ class _RecipePageState extends State<RecipePage> {
 
           Map<String, dynamic> recipeData = snapshot.requireData.data() as Map<String, dynamic>;
 
-          for (int index = 0; index < recipeData['ingredients'].length; index++)
+          for (int index = 0; index < recipeData['ingredients'].length; index++) {
             addedToShoppingList.add(false);
+          }
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -84,32 +91,125 @@ class _RecipePageState extends State<RecipePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.network(recipeData['imgUrl']),
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.recipeTitle,
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Explore personalized recipes just for you.',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: Image.network(
+                      recipeData['imgUrl'],
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Ingrédients:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                   for (int index = 0; index < recipeData['ingredients'].length; index++)
-                    ListTile(
-                      title: Text(recipeData['ingredients'][index]),
-                      subtitle: Text('${recipeData['quantity'][index]} ${recipeData['unit'][index]}'),
-                      trailing: IconButton(
-                        icon: addedToShoppingList[index] ? Icon(Icons.check) : Icon(Icons.add_shopping_cart),
+                    Column(
+                      children: [
+                        ListTile(
+                          title: Text(recipeData['ingredients'][index]),
+                          subtitle: Text(
+                            '${recipeData['quantity'][index]} ${recipeData['unit'][index]}',
+                          ),
+                          trailing: IconButton(
+                            icon: addedToShoppingList[index]
+                                ? Icon(Icons.check, color: Colors.green)
+                                : Icon(Icons.add_shopping_cart),
+                            onPressed: () {
+                              if (addedToShoppingList[index] == false) {
+                                addItemToShoppingList(
+                                  recipeData['ingredients'][index],
+                                  index,
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                        Divider(), // Separator between ingredients
+                      ],
+                    ),
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      child: ElevatedButton(
                         onPressed: () {
-                          if (addedToShoppingList[index] == false) {
-                            addItemToShoppingList(recipeData['ingredients'][index], index);
-                          }
-
+                          addAllItemToShoppingList(recipeData['ingredients']);
                         },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.orange,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 15,
+                            horizontal: 25,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          shadowColor: Colors.black,
+                          elevation: 5,
+                        ),
+                        child: Text(
+                          'Ajouter tout à la liste de courses',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
-                  ElevatedButton(
-                    onPressed: () {
-                      addAllItemToShoppingList(recipeData['ingredients']); // Call function to add all items to shopping list
-                    },
-                    child: Text('Add All'),
                   ),
-                  // Vous pouvez afficher d'autres détails de la recette ici
-                  for (int index = 0; index < recipeData['recipe'].length; index++)
-                    ListTile(
-                      title: Text(recipeData['recipe'][index]),
-                    ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Préparation:',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.orange),
+                  ),
+                  SizedBox(height: 10),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: recipeData['recipe'].length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(
+                              recipeData['recipe'][index],
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                          Divider(color: Colors.grey),
+                        ],
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

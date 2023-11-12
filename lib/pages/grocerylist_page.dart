@@ -33,7 +33,8 @@ class _GroceryListPageState extends State<GroceryListPage> {
       appBar: AppBar(
           backgroundColor: Colors.transparent, // Définit l'arrière-plan comme transparent
   elevation: 0, // Supprime l'ombre sous la barre d'applications
-  title: Text(''), 
+  title: Text(''),
+  iconTheme: IconThemeData(color: Colors.orange),
         actions: [
           ElevatedButton(
             onPressed: () {
