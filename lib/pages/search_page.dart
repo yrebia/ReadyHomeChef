@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ready_home_chef/pages/recipes_page.dart';
@@ -10,19 +11,70 @@ class SearchRecipePage extends StatefulWidget {
 class _SearchRecipePageState extends State<SearchRecipePage> {
   String searchQuery = '';
   Stream<QuerySnapshot>? searchResults;
+  late String uid;
+  Map<String, bool> filters = {};
+  bool showFilters = false;
+
+  bool isFilterEmpty() {
+    bool test = true;
+    filters.forEach((key, value) {
+      if (value == true) {
+        test = false;
+      }
+    });
+    print(test);
+    return test;
+  }
 
   void updateSearchResults(String query) {
     setState(() {
       searchQuery = query;
       if (query.isNotEmpty) {
         final lowercaseQuery = query.toLowerCase();
-        searchResults = FirebaseFirestore.instance
+        if (isFilterEmpty()) {
+          searchResults = FirebaseFirestore.instance
             .collection('recipes')
             .where('title_lowercase', isGreaterThanOrEqualTo: lowercaseQuery)
             .where('title_lowercase', isLessThan: lowercaseQuery + 'z')
             .snapshots();
+        } else {
+          searchResults = FirebaseFirestore.instance
+            .collection('recipes')
+            .where('title_lowercase', isGreaterThanOrEqualTo: lowercaseQuery)
+            .where('title_lowercase', isLessThan: lowercaseQuery + 'z')
+            .where('filter', arrayContainsAny: filters.entries.where((e) => e.value).map((e) => e.key).toList())
+            .snapshots();
+        }
       } else {
-        searchResults = FirebaseFirestore.instance.collection('recipes').snapshots();
+        if (isFilterEmpty()) {
+          searchResults = FirebaseFirestore.instance.collection('recipes').snapshots();
+        } else {
+          searchResults = FirebaseFirestore.instance.collection('recipes')
+            .where('filter', arrayContainsAny: filters.entries.where((e) => e.value).map((e) => e.key).toList())
+            .snapshots();
+        }
+      }
+    });
+  }
+
+  void getFiltersForUser() {
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot doc) {
+      if (doc.exists) {
+        // Update the filters map based on the data fetched from Firestore
+        setState(() {
+          filters = {
+            'vegetarian': doc['restriction']['vegetarian'],
+            'pescatarian': doc['restriction']['pescatarian'],
+            'noDairy': doc['restriction']['noDairy'],
+            'noPork': doc['restriction']['noPork'],
+            'vegan': doc['restriction']['vegan'],
+            'noGluten': doc['restriction']['noGluten'],
+          };
+        });
       }
     });
   }
@@ -30,7 +82,31 @@ class _SearchRecipePageState extends State<SearchRecipePage> {
   @override
   void initState() {
     super.initState();
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        uid = user.uid;
+        getFiltersForUser(); // Retrieve filter values for the current user.
+      }
+    });
     searchResults = FirebaseFirestore.instance.collection('recipes').snapshots();
+  }
+
+  Widget buildFilterRow() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: filters.keys.map((filter) {
+        return CheckboxListTile(
+          title: Text(filter),
+          value: filters[filter],
+          onChanged: (bool? value) {
+            setState(() {
+              filters[filter] = value!;
+            });
+            updateSearchResults('');
+          },
+        );
+      }).toList(),
+    );
   }
 
   @override
@@ -42,7 +118,7 @@ class _SearchRecipePageState extends State<SearchRecipePage> {
       ),
       body: Column(
         children: [
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
@@ -56,6 +132,23 @@ class _SearchRecipePageState extends State<SearchRecipePage> {
               ),
             ),
           ),
+          // filtres
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text('Filters'),
+              SizedBox(width: 8),
+              Switch(
+                value: showFilters,
+                onChanged: (value) {
+                  setState(() {
+                    showFilters = value;
+                  });
+                },
+              ),
+            ],
+          ),
+          if (showFilters) buildFilterRow(),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: searchResults,

@@ -31,6 +31,13 @@ class _LandingPageState extends State<LandingPage> {
     try {
       await firestore.collection('user').doc(user?.uid).set(restriction);
       print('Document ajouté avec succès à la collection "users".');
+      await FirebaseFirestore.instance.collection('fridge').doc(user?.uid).set({
+        'aliment': [],
+      });
+      await FirebaseFirestore.instance.collection('grocery').doc(user?.uid).set({
+        'check': [],
+        'item': [],
+      });
     } catch (e) {
       print('Erreur lors de l\'ajout du document : $e');
     };
