@@ -16,20 +16,20 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-appBar: AppBar(
-  backgroundColor: Colors.transparent, // Définit l'arrière-plan comme transparent
-  elevation: 0, // Supprime l'ombre sous la barre d'applications
-  title: Text(''), // Utilisez une chaîne vide pour supprimer le titre
-  actions: [
-    IconButton(
-      onPressed: signUserOut,
-      icon: Icon(Icons.logout),
-    )
-  ],
-  iconTheme: IconThemeData(color: Color(0xFF2E2E2E)), // Définit la couleur des icônes
-),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent, // Définit l'arrière-plan comme transparent
+        elevation: 0, // Supprime l'ombre sous la barre d'applications
+        title: const Text(''), // Utilisez une chaîne vide pour supprimer le titre
+        actions: [
+          IconButton(
+            onPressed: signUserOut,
+            icon: const Icon(Icons.logout),
+          )
+        ],
+        iconTheme: const IconThemeData(color: Color(0xFF2E2E2E)), // Définit la couleur des icônes
+      ),
 
-      drawer: SidebarDrawer(),
+      drawer: const SidebarDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -38,12 +38,12 @@ appBar: AppBar(
             children: [
               // Bannière d'utilisateur
               Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.orange,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -66,35 +66,35 @@ appBar: AppBar(
                   ],
                 ),
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
       
               // Utilisation de l'alias pour le composant SearchBar
               mySearchBar.SearchBar(controller: TextEditingController()),
       
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
       
               // Recette du jour
-              Text(
-                'Recette du Jour',
+              const Text(
+                'Recipes of the day',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Carrousel de recettes populaires
               PopularRecipesCarousel(),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
       
               // My Favorites
-              Text(
+              const Text(
                 'My Favorites',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
+              const Text(
                 'You don\'t have any recipes in favorites yet',
                 style: TextStyle(
                   fontSize: 16,

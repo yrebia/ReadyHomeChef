@@ -7,13 +7,15 @@ import 'package:ready_home_chef/pages/fridge_page.dart';
 
 
 class SidebarDrawer extends StatelessWidget {
+  const SidebarDrawer({super.key});
+
   @override
   Widget build(BuildContext context) {
-    Color textColor = Color(0xFF646464); // Couleur de la police plus douce
+    Color textColor = const Color(0xFF646464); // Couleur de la police plus douce
 
     return Drawer(
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               Color.fromARGB(255, 255, 211, 164),
@@ -64,12 +66,12 @@ class SidebarDrawer extends StatelessWidget {
                   fontFamily: 'Verdana',
                 ),
               ),
-onTap: () {
-  Navigator.pop(context);
-                       Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SearchRecipePage()),
-    );}
+              onTap: () {
+                Navigator.pop(context);
+                                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SearchRecipePage()),
+                  );}
             ),
             // ListTile(
             //   leading: Icon(FontAwesomeIcons.heart, color: textColor),
@@ -108,15 +110,15 @@ onTap: () {
             ),
             Card(
               elevation: 4,
-              margin: EdgeInsets.symmetric(vertical: 8.0),
+              margin: const EdgeInsets.symmetric(vertical: 8.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.0),
               ),
               color: Colors.orange,
-              child: Container(
+              child: SizedBox(
                 width: 100,
                 child: ListTile(
-                  leading: Icon(FontAwesomeIcons.snowflake),
+                  leading: const Icon(FontAwesomeIcons.snowflake),
                   title: Text(
                     'Your Fridge',
                     style: TextStyle(
@@ -129,24 +131,24 @@ onTap: () {
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const FridgePage()),
-    );
+                    context,
+                    MaterialPageRoute(builder: (context) => const FridgePage()),
+                  );
                   },
                 ),
               ),
             ),
             Card(
               elevation: 4,
-              margin: EdgeInsets.symmetric(vertical: 8.0),
+              margin: const EdgeInsets.symmetric(vertical: 8.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.0),
               ),
               color: Colors.orange,
-              child: Container(
+              child: SizedBox(
                 width: 150,
                 child: ListTile(
-                  leading: Icon(FontAwesomeIcons.shoppingBasket),
+                  leading: const Icon(FontAwesomeIcons.shoppingBasket),
                   title: Text(
                     'Your Grocery List',
                     style: TextStyle(
@@ -158,10 +160,10 @@ onTap: () {
                   ),
                   onTap: () {
                     Navigator.pop(context);
-                       Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => GroceryListPage()),
-    );
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => GroceryListPage()),
+                  );
                   },
                 ),
               ),

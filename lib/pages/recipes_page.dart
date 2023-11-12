@@ -14,6 +14,7 @@ class RecipePage extends StatefulWidget {
 
 class _RecipePageState extends State<RecipePage> {
   final user = FirebaseAuth.instance.currentUser;
+  int people = 1;
 
   List<bool> addedToShoppingList = [];
 
@@ -58,7 +59,7 @@ class _RecipePageState extends State<RecipePage> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.orange),
+          icon: const Icon(Icons.arrow_back, color: Colors.orange),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -72,11 +73,11 @@ class _RecipePageState extends State<RecipePage> {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (!snapshot.hasData || !snapshot.requireData.exists) {
-            return Center(child: Text('La recette n\'existe pas.'));
+            return const Center(child: Text('La recette n\'existe pas.'));
           }
 
           Map<String, dynamic> recipeData = snapshot.requireData.data() as Map<String, dynamic>;
@@ -92,7 +93,7 @@ class _RecipePageState extends State<RecipePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: Colors.orange,
                       borderRadius: BorderRadius.circular(16),
@@ -102,14 +103,14 @@ class _RecipePageState extends State<RecipePage> {
                       children: [
                         Text(
                           widget.recipeTitle,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
-                        SizedBox(height: 8),
-                        Text(
+                        const SizedBox(height: 8),
+                        const Text(
                           'Explore personalized recipes just for you.',
                           style: TextStyle(
                             fontSize: 16,
@@ -120,7 +121,7 @@ class _RecipePageState extends State<RecipePage> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12.0),
                     child: Image.network(
@@ -130,8 +131,40 @@ class _RecipePageState extends State<RecipePage> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.person),
+                          IconButton(
+                            icon: const Icon(Icons.remove),
+                            onPressed: () {
+                              if (people > 1) {
+                                setState(() {
+                                  people -= 1;
+                                });
+                              }
+                            },
+                          ),
+                          Text(" $people "),
+                          IconButton(
+                            icon: const Icon(Icons.add),
+                            onPressed: () {
+                              setState(() {
+                                people += 1;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+
+                      Text("Price : ${(recipeData['price'] * people).toStringAsFixed(2)}€"),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
                     'Ingrédients:',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
@@ -141,12 +174,12 @@ class _RecipePageState extends State<RecipePage> {
                         ListTile(
                           title: Text(recipeData['ingredients'][index]),
                           subtitle: Text(
-                            '${recipeData['quantity'][index]} ${recipeData['unit'][index]}',
+                            '${recipeData['quantity'][index] * people} ${recipeData['unit'][index]}',
                           ),
                           trailing: IconButton(
                             icon: addedToShoppingList[index]
-                                ? Icon(Icons.check, color: Colors.green)
-                                : Icon(Icons.add_shopping_cart),
+                                ? const Icon(Icons.check, color: Colors.green)
+                                : const Icon(Icons.add_shopping_cart),
                             onPressed: () {
                               if (addedToShoppingList[index] == false) {
                                 addItemToShoppingList(
@@ -157,19 +190,19 @@ class _RecipePageState extends State<RecipePage> {
                             },
                           ),
                         ),
-                        Divider(), // Separator between ingredients
+                        const Divider(), // Separator between ingredients
                       ],
                     ),
                   Center(
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 20),
+                      margin: const EdgeInsets.symmetric(vertical: 20),
                       child: ElevatedButton(
                         onPressed: () {
                           addAllItemToShoppingList(recipeData['ingredients']);
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.orange,
-                          padding: EdgeInsets.symmetric(
+                          backgroundColor: Colors.orange,
+                          padding: const EdgeInsets.symmetric(
                             vertical: 15,
                             horizontal: 25,
                           ),
@@ -179,22 +212,22 @@ class _RecipePageState extends State<RecipePage> {
                           shadowColor: Colors.black,
                           elevation: 5,
                         ),
-                        child: Text(
+                        child: const Text(
                           'Ajouter tout à la liste de courses',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'Préparation:',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.orange),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: recipeData['recipe'].length,
                     itemBuilder: (context, index) {
                       return Column(
@@ -202,10 +235,10 @@ class _RecipePageState extends State<RecipePage> {
                           ListTile(
                             title: Text(
                               recipeData['recipe'][index],
-                              style: TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 16),
                             ),
                           ),
-                          Divider(color: Colors.grey),
+                          const Divider(color: Colors.grey),
                         ],
                       );
                     },
