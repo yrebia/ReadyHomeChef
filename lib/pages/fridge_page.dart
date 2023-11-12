@@ -29,6 +29,18 @@ class _FridgePageState extends State<FridgePage> {
     }
   }
 
+  void deleteItemToFirebase(String item) {
+    if (item.isNotEmpty) {
+      // Ajouter l'élément dans Firebase.
+      FirebaseFirestore.instance
+          .collection('fridge')
+          .doc(user?.uid)
+          .update({
+        'items': FieldValue.arrayRemove([item]),
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     
@@ -55,14 +67,6 @@ class _FridgePageState extends State<FridgePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('My Fridge'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () {
-              // Rafraîchir les données si nécessaire.
-            },
-          ),
-        ],
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
@@ -95,8 +99,13 @@ class _FridgePageState extends State<FridgePage> {
           // Construisez la liste d'éléments à partir des données Firestore.
           List<Widget> elements = fridgeItems.map((item) {
             return ListTile(
-              title: Text(item.toString()),
-              // Personnalisez l'affichage des éléments selon vos besoins.
+            title: Text(item.toString()),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                deleteItemToFirebase(item.toString());
+              },
+              ),
             );
           }).toList();
 

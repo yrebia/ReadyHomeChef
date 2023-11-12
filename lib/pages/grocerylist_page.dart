@@ -12,7 +12,19 @@ class _GroceryListPageState extends State<GroceryListPage> {
   final TextEditingController itemController = TextEditingController();
 
   void addItemOnGroceryList() {
-    // Votre logique pour ajouter des éléments à la liste de courses
+    if (itemController.text.isNotEmpty) {
+      FirebaseFirestore.instance.collection('grocery').doc(user?.uid).get().then((snapshot) {
+        Map<String, dynamic>? groceryList = snapshot.data();
+        groceryList?['item'].add(itemController.text);
+        groceryList?['check'].add(false);
+
+        if (groceryList != null) {
+          FirebaseFirestore.instance.collection('grocery').doc(user?.uid).set(groceryList);
+        }
+        itemController.text = '';
+      });
+
+    }
   }
 
   @override
