@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_home_chef/components/SidebarDrawer.dart';
+import 'package:ready_home_chef/components/makable_recipes_carrousel.dart';
 import 'package:ready_home_chef/components/search_bar.dart' as mySearchBar;
 import 'package:ready_home_chef/components/popular_recipes_carrousel.dart';
 
@@ -84,6 +85,18 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 16),
               // Carrousel de recettes populaires
               PopularRecipesCarousel(),
+              const SizedBox(height: 32),
+
+              const Text(
+                'Recipes you can make',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Carrousel de recettes populaires
+              MakableRecipesCarousel(),
               const SizedBox(height: 32),
       
               // My Favorites
